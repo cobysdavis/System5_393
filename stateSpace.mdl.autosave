@@ -87,7 +87,7 @@ Model {
   LastModifiedBy	  "cobydavis"
   ModifiedDateFormat	  "%<Auto>"
   LastModifiedDate	  "Thu Mar 15 12:54:15 2018"
-  RTWModifiedTimeStamp	  443025827
+  RTWModifiedTimeStamp	  443041274
   ModelVersionFormat	  "1.%<AutoIncrement:206>"
   ConfigurationManager	  "none"
   SampleTimeColors	  off
@@ -746,7 +746,7 @@ Model {
 	  $ObjectID		  22
 	  Version		  "1.15.1"
 	  StartTime		  "0"
-	  StopTime		  "20"
+	  StopTime		  "3.100000e-01"
 	  AbsTol		  "auto"
 	  FixedStep		  "auto"
 	  InitialStep		  "auto"
@@ -757,7 +757,7 @@ Model {
 	  MaxConsecutiveZCs	  "1000"
 	  ExtrapolationOrder	  4
 	  NumberNewtonIterations  1
-	  MaxStep		  "1.000000e-02"
+	  MaxStep		  "1.000000e-04"
 	  MinStep		  "auto"
 	  MaxConsecutiveMinStep	  "1"
 	  RelTol		  "1e-3"
@@ -1308,7 +1308,7 @@ Model {
 	  $ObjectID		  35
 	  Version		  "1.15.1"
 	  StartTime		  "0"
-	  StopTime		  "20"
+	  StopTime		  "3.100000e-01"
 	  AbsTol		  "auto"
 	  FixedStep		  "auto"
 	  InitialStep		  "auto"
@@ -1319,7 +1319,7 @@ Model {
 	  MaxConsecutiveZCs	  "1000"
 	  ExtrapolationOrder	  4
 	  NumberNewtonIterations  1
-	  MaxStep		  "1.000000e-02"
+	  MaxStep		  "1.000000e-04"
 	  MinStep		  "auto"
 	  MaxConsecutiveMinStep	  "1"
 	  RelTol		  "1e-3"

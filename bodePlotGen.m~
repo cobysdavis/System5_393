@@ -120,10 +120,7 @@ for i=1:sz
     zxIn=zxIn(1:smallest);
     zxOut=zxOut(1:smallest);
     
-    if outtime(zxOut(1))-intime(zxIn(1))>period/3
-        zxOut=zxOut(2:length(zxOut));
-        zxIn=zxIn(1:length(zxIn)-1);
-    end
+    if outtime(zxOut(1))-inttime(zxIn(1))>period/2
     %calculate average phase using zero-time-difference algorithm
     phase=0;
     if smallest>=phase_avg

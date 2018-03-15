@@ -16,12 +16,16 @@ nophase = filtfilt(d,output);
 outputFiltered=filter(b,a,output);
 nophasesmooth=filter(b,a,nophase);
 
-% subplot(2,1,1);
-% plot(time,nophase,'r',time,outputFiltered,'g',time,nophasesmooth,'b');
-% title('Filtered Waveforms');
-% legend('no-phase','smooth','no-phase + smooth');
-% 
 % subplot(2,1,2);
-% plot(output);
+% plot(time,nophase,time,outputFiltered,'g',time,nophasesmooth,'r');
+% title('Filtered Waveforms');
+% xlabel('time')
+% ylabel('amplitude')
+% legend('no-phase filter','moving-average','both filters');
+% 
+% subplot(2,1,1);
+% plot(time,output);
+% xlabel('time')
+% ylabel('amplitude')
 % title('Original Waveform');
 end
