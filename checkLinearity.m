@@ -2,7 +2,7 @@ function [ ] = checkLinearity()
     % Launch the GUI, which is a singleton
     blackBox
     syms t
-    funs=[sin(t) 4*cos(4*t) sin(t)+4*cos(4*t)]
+    funs=[sin(t) cos(2*t) 2*sin(t)+4*cos(2*t)]
     length(funs)
     % Find handle to hidden figure
     temp = get(0,'showHiddenHandles');

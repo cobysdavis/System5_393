@@ -1,5 +1,4 @@
 function [ ] = bodePlotGen(minExp,maxExp,step)
-
 close all
 syms t
 windowSize = 300; 
@@ -12,6 +11,7 @@ Gain=zeros(1,sz);
 Phase=zeros(1,sz);
 funs=zeros(1,sz,'sym');
 freq=zeros(1,sz);
+phase_avg=2;
 for i=1:step:sz
     if i==1
         base=10^(i-1-minExp);
@@ -28,25 +28,23 @@ freq=freq(1:sz);
 for i=1:sz
     funs(i)=sin(freq(i)*t);
 end
+    figure('units','normalized','outerposition',[0 0 1 1])
 for i=1:sz
     data=load(strcat(num2char(i),'.mat'));
     data.input.time=data.(num2char(i)).input.time;
     data.input.signal=data.(num2char(i)).input.signal;
     data.output.time=data.(num2char(i)).output.time;
     data.output.signal=data.(num2char(i)).output.signal;
-
     intime=data.input.time;
     input=data.input.signal;
     outtime=data.output.time;
     output=data.output.signal;
 %     outputFiltered=filter(b,a,output);
     outputFiltered=ZeroPhasePlot(data)
-    outputFFT=fft(outputFiltered);
     n = length(outputFiltered);
     fs=n/30;%samples/second
     %[pks,locs] = findpeaks(outputFiltered,outtime)
     c = (-1 * fs) / 2:fs / n:fs / 2 - fs / n; 
-    plot(outtime,outputFFT);
     zciOut = @(v) find(v(:).*circshift(v(:), [-1 0]) <= 0);                 % Returns Zero-Crossing Indices Of Argument Vector
     zxOut = zciOut(outputFiltered);
     zciIn = @(v) find(v(:).*circshift(v(:), [-1 0]) <= 0);                    % Returns Zero-Crossing Indices Of Argument Vector
@@ -106,8 +104,8 @@ for i=1:sz
         end
     end
     zxOut=temp;
-    length(zxOut)
-        length(zxIn)
+%     length(zxOut)
+%     length(zxIn)
 %     
 %         subplot(2,1,2)
 %     plot(outtime,outputFiltered,'r');
@@ -118,50 +116,50 @@ for i=1:sz
     
     %make arrays the same size
     smallest=min([length(zxIn) length(zxOut)]);
+    if smallest~=0
     zxIn=zxIn(1:smallest);
     zxOut=zxOut(1:smallest);
 
-    %calculate phase using zero-time-difference algorithm
+    %calculate average phase using zero-time-difference algorithm
     phase=0;
-    for j=1:1
-        phase=phase+180*freq(i)*(zxOut(j)-zxIn(j))/pi;
+    if smallest>=phase_avg
+        for j=1:phase_avg
+            phase=phase+180*freq(i)*(zxOut(j)-zxIn(j))/pi;
+        end
+        %map phase angle between -180 and 180 degrees
+        Phase(i)=phase/3;
+        if Phase(i)>180
+            Phase(i)=mod(Phase(i),180);
+        end
+        if Phase(i)<-180
+            Phase(i)=mod(Phase(i),-180);
+        end
     end
-    %map phase angle between -180 and 180 degrees
-    Phase(i)=phase;
-    if Phase(i)>180
-        Phase(i)=mod(Phase(i),180);
-    end
-    if Phase(i)<-180
-        Phase(i)=mod(Phase(i),-180);
-    end
-    
     %find Gain
     Gain(i)=20*log(abs(max(outputFiltered)));
     
     %plots
-    subplot(sz,3,3*(i-1)+1);
+    subplot(sz,2,2*(i-1)+1);
     plot(intime,input,'r')
     xlabel(char(funs(i)));
     hold on
     plot(intime(zxIn), input(zxIn), 'bp')
     
-    subplot(sz,3,3*(i-1)+2);
+    subplot(sz,2,2*(i-1)+2);
     plot(outtime,outputFiltered,'r');
     hold on
     %plot(locs,pks,'*g')
     %hold on
     plot(outtime(zxOut), outputFiltered(zxOut), 'bp');
-    
-    subplot(sz,3,3*(i-1)+3)
-    plot(c,fftshift(abs(outputFFT)));
+    end
 end
 
 %bode plots
 figure
 ax1=subplot(2,1,1);
 semilogx(freq,Gain,'r');
-ylabel(ax1,'Gain');
+ylabel(ax1,'Gain (dB)');
 ax2=subplot(2,1,2);
 semilogx(freq,Phase,'b');
-ylabel(ax2,'Phase')
+ylabel(ax2,'Phase (degrees)')
 end

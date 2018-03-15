@@ -1,3 +1,3 @@
 function [ f ] = inputFunc( t )
-	f = sin(1000*t);
+	f = 4*cos(2*t) + 2*sin(t);
 end
