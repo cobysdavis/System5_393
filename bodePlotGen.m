@@ -11,7 +11,8 @@ Gain=zeros(1,sz);
 Phase=zeros(1,sz);
 funs=zeros(1,sz,'sym');
 freq=zeros(1,sz);
-phase_avg=2;
+phase_avg=1;
+zt_diffs=zeros(1,sz);
 for i=1:step:sz
     if i==1
         base=10^(i-1-minExp);
@@ -115,29 +116,28 @@ for i=1:sz
 %     
     
     %make arrays the same size
-    smallest=min([length(zxIn) length(zxOut)]);
+    smallest=min([length(zxIn) length(zxOut)])
     if smallest~=0
     zxIn=zxIn(1:smallest);
     zxOut=zxOut(1:smallest);
     
-    if outtime(zxOut(1))-intime(zxIn(1))>period/3
-        zxOut=zxOut(2:length(zxOut));
-        zxIn=zxIn(1:length(zxIn)-1);
-    end
     %calculate average phase using zero-time-difference algorithm
-    phase=0;
-    if smallest>=phase_avg
-        for j=1:phase_avg
-            phase=phase+180*freq(i)*(zxOut(j)-zxIn(j))/pi;
-        end
+    zt_diffs(i)=mean(outtime(zxOut)-intime(zxIn));
+    if zt_diffs(i)<-period/2
+    figure
+    zt_diffs(i)=mean(outtime(zxOut)-(intime(zxIn)+period/2));
+    end
+    if zt_diffs(i)>period/2
+            figure
+            zt_diffs(i)=mean(outtime(zxOut)-(intime(zxIn)-period/2));
+    end
+    Phase(i)=180*freq(i)*zt_diffs(i)/pi;
         %map phase angle between -180 and 180 degrees
-        Phase(i)=phase/3;
-        if Phase(i)>180
-            Phase(i)=mod(Phase(i),180);
-        end
-        if Phase(i)<-180
-            Phase(i)=mod(Phase(i),-180);
-        end
+    if Phase(i)>180
+        Phase(i)=mod(Phase(i),180);
+    end
+    if Phase(i)<-180
+        Phase(i)=mod(Phase(i),-180);
     end
     %find Gain
     Gain(i)=20*log(abs(max(outputFiltered)));
@@ -155,10 +155,14 @@ for i=1:sz
     %plot(locs,pks,'*g')
     %hold on
     plot(outtime(zxOut), outputFiltered(zxOut), 'bp');
+    disp(length(zxOut))
+    disp(length(zxIn))
+
     end
 end
 
 %bode plots
+
 figure
 ax1=subplot(2,1,1);
 semilogx(freq,Gain,'r');
@@ -166,4 +170,5 @@ ylabel(ax1,'Gain (dB)');
 ax2=subplot(2,1,2);
 semilogx(freq,Phase,'b');
 ylabel(ax2,'Phase (degrees)')
-end
+
+end 

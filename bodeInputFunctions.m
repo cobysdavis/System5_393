@@ -41,7 +41,8 @@ function [ ] = bodeInputFunctions(min,max,step)
 
     for k=1:length(funs)
     a=funs(k);
-    set(handles.axisEnd, 'String', floor(10*pi)/(freq(k)));
+    runtime=10*pi/freq(k);
+    set(handles.axisEnd, 'String', runtime);
     % This changes the step size
     set(handles.stepSize, 'String', 1/(100*(freq(k))));
     % You need to use a string for the equation you want
