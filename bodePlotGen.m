@@ -51,7 +51,7 @@ for i=1:sz
     zciIn = @(v) find(v(:).*circshift(v(:), [-1 0]) <= 0);                    % Returns Zero-Crossing Indices Of Argument Vector
     zxIn = zciIn(input);
     period=2*pi/(freq(i));
-    cluster=period/15;
+    cluster=period/18;
     temp=[];
     %remove clustering points from in-zeros
 %     for j=1:length(zxIn)
@@ -162,7 +162,9 @@ for i=1:sz
 end
 
 %bode plots
-
+for i=1:length(freq)
+    disp(freq(i))
+end
 figure
 ax1=subplot(2,1,1);
 semilogx(freq,Gain,'r');
