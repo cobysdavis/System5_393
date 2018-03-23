@@ -1,0 +1,4 @@
+data = iddata(y,[],Ts)
+%https://www.mathworks.com/help/ident/ref/iddata.html
+sys = tfest(data,np)
+%https://www.mathworks.com/help/ident/ref/tfest.html
