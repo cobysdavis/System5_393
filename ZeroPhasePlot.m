@@ -13,8 +13,6 @@ d = designfilt('lowpassfir', ...
     'PassbandRipple',1,'StopbandAttenuation',60, ...
     'DesignMethod','equiripple');
 nophase = filtfilt(d,output);
-outputFiltered=filter(b,a,output);
-nophasesmooth=filter(b,a,nophase);
 
 % subplot(2,1,2);
 % plot(time,nophase,time,outputFiltered,'g',time,nophasesmooth,'r');

@@ -1,6 +1,7 @@
 function [ ] = bodeInputFunctions(min,max,step)
+
     % Launch the GUI, which is a singleton
-    run stateSpace.mdl
+    open stateSpace.mdl
     blackBox;
     syms t
     l=(max+min+1)
@@ -41,7 +42,8 @@ function [ ] = bodeInputFunctions(min,max,step)
 
     for k=1:length(funs)
     a=funs(k);
-    runtime=10*pi/freq(k);
+    period=2*pi/freq(k)
+    runtime=10*period;
     set(handles.axisEnd, 'String', runtime);
     % This changes the step size
     set(handles.stepSize, 'String', 1/(100*(freq(k))));
