@@ -1,10 +1,6 @@
 function [ ] = bodePlotGen(minExp,maxExp,step)
 close all
 syms t
-figure
-windowSize = 300; 
-b = (1/windowSize)*ones(1,windowSize);
-a = 1;
 l=(maxExp+minExp+1);
 p=(step-1)*(maxExp+minExp);
 sz=l+p;
@@ -12,8 +8,6 @@ Gain=zeros(1,sz);
 Phase=zeros(1,sz);
 funs=zeros(1,sz,'sym');
 freq=zeros(1,sz);
-phase_avg=1;
-zt_diffs=zeros(1,sz);
 for i=1:step:sz
     if i==1
         base=10^(i-1-minExp);
@@ -41,123 +35,26 @@ for i=1:sz
     input=data.input.signal;
     outtime=data.output.time;
     output=data.output.signal;
-%     outputFiltered=filter(b,a,output);
     outputFiltered=ZeroPhasePlot(data);
-    n = length(outputFiltered);
-    fs=n/30;%samples/second
-    %[pks,locs] = findpeaks(outputFiltered,outtime)
-    c = (-1 * fs) / 2:fs / n:fs / 2 - fs / n; 
-    zciOut = @(v) find(v(:).*circshift(v(:), [-1 0]) <= 0);                 % Returns Zero-Crossing Indices Of Argument Vector
-    zxOut = zciOut(outputFiltered);
-    zciIn = @(v) find(v(:).*circshift(v(:), [-1 0]) <= 0);                    % Returns Zero-Crossing Indices Of Argument Vector
-    zxIn = zciIn(input);
     period=2*pi/(freq(i));
-    cluster=period/21;
-    temp=[];
 
-    %remove clustering points from out-zeros
-    
-    
-%     figure
-%     subplot(2,1,1)
-%     plot(outtime,outputFiltered,'r');
-%     hold on
-%     plot(outtime(zxOut), outputFiltered(zxOut), 'bp');
-%     
-    flag=0;
-    disp(length(outtime(zxOut)))
-    for j=1:length(zxOut)
-        flag=0;
-        for k=1:length(temp)
-            if abs(outtime(zxOut(j))-outtime(temp(k)))<cluster
-                flag=1;
-            end
-        end
-        if flag==0
-            temp=[temp,zxOut(j)];
-        end
-    end
-    zxOut=temp;
-    disp(length(outtime(zxOut)))
-    temp=[];
-    
 
-    %remove first few zeros (after 1 period or so) from both in and out
-%     for j=1:length(zxIn)-1
-%         if(intime(zxIn(j))>3*period)
-%             temp=[temp,zxIn(j)];
-%         end
-%     end
-%     zxIn=temp;
-%     temp=[];
-%     for j=1:length(zxOut)-2
-%         if(outtime(zxOut(j))>3*period)
-%             temp=[temp,zxOut(j)];   
-%         end
-%     end
-%     zxOut=temp;
-
-%     length(zxOut)
-%     length(zxIn)
-%     
-%         subplot(2,1,2)
-%     plot(outtime,outputFiltered,'r');
-%     hold on
-%     plot(outtime(zxOut), outputFiltered(zxOut), 'bp');
-%     
-%     
     smallestTime=min(length(intime), length(outtime));
     %find Gain
     in=input(1:smallestTime);
     out=outputFiltered(1:smallestTime);
     Gain(i)=20*log(abs(max(outputFiltered)));
     Phase(i)=phaseDiff(in,out,period,intime(1:smallestTime));
-%     if zxOut(length(zxOut))>Gain(i)/2
-%         zxOut=zxOut(1:length(zxOut)-1);
-%     end
-    %make arrays the same size
-%     smallest=min([length(zxIn) length(zxOut)]);
-%     if smallest~=0
-%         zxIn=zxIn(length(zxIn)-smallest+1:length(zxIn));
-%         zxOut=zxOut(length(zxOut)-smallest+1:length(zxOut));
-% 
-%         %calculate average phase using zero-time-difference algorithm
-%         zt_diffs(i)=mean(outtime(zxOut)-intime(zxIn));
-%         if zt_diffs(i)<-period/2
-%             zt_diffs(i)=mean(outtime(zxOut)-(intime(zxIn)+period/2));
-%         end
-%         if zt_diffs(i)>period/2
-%             figure
-%             zt_diffs(i)=mean(outtime(zxOut)-(intime(zxIn)-period/2));
-%         end
-%         Phase(i)=180*freq(i)*zt_diffs(i)/pi;
-%             %map phase angle between -180 and 180 degrees
-%         if Phase(i)>180
-%             Phase(i)=mod(Phase(i),180);
-%         end
-%         if Phase(i)<-180
-%             Phase(i)=mod(Phase(i),-180);
-%         end
-        %plots
-        subplot(sz,2,2*(i-1)+1);
-        plot(intime,input,'r')
-        xlabel(char(funs(i)));
-        hold on
-        plot(intime(zxIn), input(zxIn), 'bp')
+        
+    %plots
+    subplot(sz,2,2*(i-1)+1);
+    plot(intime,input,'r')
+    xlabel(char(funs(i)));
+    hold on
+    subplot(sz,2,2*(i-1)+2);
+    plot(outtime,outputFiltered,'b');
 
-        subplot(sz,2,2*(i-1)+2);
-        plot(outtime,outputFiltered,'r');
-        hold on
-        %plot(locs,pks,'*g')
-        %hold on
-        plot(outtime(zxOut), outputFiltered(zxOut), 'bp');
-        disp(length(zxOut))
-        disp(length(zxIn))
 
-%         else
-%             Gain(i)=nan;
-%             Phase(i)=nan;
-%     end
 end
 
 %bode plots

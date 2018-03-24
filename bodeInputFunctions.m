@@ -1,5 +1,4 @@
 function [ ] = bodeInputFunctions(min,max,step)
-
     % Launch the GUI, which is a singleton
     open stateSpace.mdl
     blackBox;

@@ -3,11 +3,11 @@ clear, clc, close all
 % signal parameters
 fs = 44100;
 f0 = 1000;
-T = 1;
+T = 0.01;
 
 % preparation of the time vector
-N = round(T*fs)
-t = (0:N-1)/fs
+N = round(T*fs);
+t = (0:N-1)/fs;
 
 % generation of the signal
 x = sin(2*pi*f0*t) + 0.02*randn(1, N);
@@ -19,10 +19,10 @@ PhDiff = PhDiff*180/pi;
 
 % display the phase difference
 PhDiffstr = num2str(PhDiff);
-disp(['Phase difference Y->X = ' PhDiffstr ' deg'])
+disp(['Phase difference Y->X = ' PhDiffstr ' deg']);
 
 % plot the signals
-figure(1)
+figure
 plot(t, x, 'b', 'LineWidth', 2)
 grid on
 hold on
