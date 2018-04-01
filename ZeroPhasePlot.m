@@ -15,11 +15,11 @@ d = designfilt('lowpassfir', ...
 nophase = filtfilt(d,output);
 
 % subplot(2,1,2);
-% plot(time,nophase,time,outputFiltered,'g',time,nophasesmooth,'r');
+% plot(time,nophase);
 % title('Filtered Waveforms');
 % xlabel('time')
 % ylabel('amplitude')
-% legend('no-phase filter','moving-average','both filters');
+% legend('no-phase filter');
 % 
 % subplot(2,1,1);
 % plot(time,output);

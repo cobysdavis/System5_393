@@ -1,5 +1,6 @@
 function [PhDiff] = phaseDiff(input,output,period,time)
-a=floor(length(time)/2);
+% a=floor(length(time)/2);
+a=1;
 b=length(time);
 interval=time(a:b);
 

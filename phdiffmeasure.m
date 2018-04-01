@@ -1,9 +1,3 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%             Phase Difference Measurement             %
-%              with MATLAB Implementation              %
-%                                                      %
-% Author: M.Sc. Eng. Hristo Zhivomirov        12/01/14 %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function PhDiff = phdiffmeasure(x, y)
 
@@ -34,9 +28,15 @@ win = rectwin(N);
 
 % fft of the first signal
 X = fft(x.*win);
-
 % fft of the second signal
 Y = fft(y.*win);
+
+% %plots
+% figure(1)
+% plot(abs(X),'r')
+% hold on
+% plot(angle(X),'g')
+
 
 
 % phase difference calculation

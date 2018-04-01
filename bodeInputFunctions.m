@@ -42,10 +42,10 @@ function [ ] = bodeInputFunctions(min,max,step)
     for k=1:length(funs)
     a=funs(k);
     period=2*pi/freq(k)
-    runtime=10*period;
+    runtime=20*period;
     set(handles.axisEnd, 'String', runtime);
     % This changes the step size
-    set(handles.stepSize, 'String', 1/(100*(freq(k))));
+    set(handles.stepSize, 'String', 1/(100*((freq(k)))));
     % You need to use a string for the equation you want
     % Or if you have a variable you can use sprintf which is like the
     % printf function in c programming

@@ -1,0 +1,11 @@
+data=load('good_step.mat');
+intime=good_step.input.time;
+input=good_step.input.signal;
+outtime=good_step.output.time;
+output=good_step.output.signal;
+outputFiltered=ZeroPhasePlot(good_step);
+figure
+subplot(2,1,1)
+plot(outtime,output,'r')
+subplot(2,1,2)
+plot(outtime,output,'b')

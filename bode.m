@@ -1,5 +1,5 @@
-k=188
-t=1/0.36
+k=2
+t=4
 close all
 num0=[k]
 dem0=[1]
